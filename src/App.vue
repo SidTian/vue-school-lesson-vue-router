@@ -2,29 +2,30 @@
 </script>
 
 <template>
-  <div>
-    <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    <router-view></router-view>
-    <router-link to="/">
-      <button>Home</button>
-    </router-link>
-    <router-link to="/about">
-      <button>About</button>
-    </router-link>
-  </div>
+    <TheNavigation />
+    <div class="container">
+        <router-view v-slot="{ Component }">
+            <transition name="fade" mode="out-in">
+                <component :is="Component" :key="$route.path"></component>
+            </transition>
+        </router-view>
+    </div>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<script>
+import TheNavigation from "@/components/TheNavigation.vue";
+export default {
+    components: { TheNavigation },
+};
+</script>
+<style>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s linear;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>
