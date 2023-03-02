@@ -28,7 +28,24 @@ const routes = [
             }
         ]
     },
+    {
+        path: "/protected",
+        name: "Protected",
+        component: () => import("@/views/Protected.vue"),
+        meta: {
+            auth: true
+        }
+    },
     { path: "/:pathMatch(.*)*", name: "NotFound", component: () => import("@/views/NotFound.vue") },
+    { path: "/login", name: "Login", component: () => import("@/views/Login.vue") },
+    {
+        path: "/invoices",
+        name: "invoices",
+        component: () => import("@/views/Invoices.vue"),
+        meta: {
+            auth: true
+        }
+    }
 ]
 
 const router = createRouter({
@@ -38,6 +55,12 @@ const router = createRouter({
     scrollBehavior(to, from, savedPosition) {
         // return savedPosition || { top: 0 }
         return { top: 0 }
+    }
+})
+
+router.beforeEach((to, from) => {
+    if (to.meta.auth && !window.user) {
+        return { name: "Login", query: { redirect: to.fullPath } }
     }
 })
 
